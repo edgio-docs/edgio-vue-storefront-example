@@ -1,16 +1,16 @@
-import { Router } from '@layer0/core/router'
-import { CACHE_ASSETS, CACHE_PAGES } from './cache'
+import { Router } from "@edgio/core/router";
+import { CACHE_ASSETS, CACHE_PAGES } from "./cache";
 
-const DIST_APP = 'dist'
-const DIST_layer0_CLIENT = 'dist-layer0-client'
-const DIST_layer0_ASSETS = 'dist-layer0-assets'
+const DIST_APP = "dist";
+const DIST_layer0_CLIENT = "dist-layer0-client";
+const DIST_layer0_ASSETS = "dist-layer0-assets";
 
-const SPLAT = ':path*'
-const SUFFIX_SPLAT = `:suffix/${SPLAT}`
+const SPLAT = ":path*";
+const SUFFIX_SPLAT = `:suffix/${SPLAT}`;
 
 // //////////////////////////////////////////
 
-const router = new Router()
+const router = new Router();
 
 const pages = [
   // home
@@ -223,57 +223,57 @@ const pages = [
   `/zing-${SUFFIX_SPLAT}`,
   `/zoe-${SUFFIX_SPLAT}`,
   `/zoltan-${SUFFIX_SPLAT}`,
-]
+];
 
 // static prerendering
-router.prerender(pages.filter(page => !page.includes(SPLAT)))
+router.prerender(pages.filter((page) => !page.includes(SPLAT)));
 
 // layer0 static files
-router.get('/service-worker.js', ({ serviceWorker, cache }) => {
-  cache(CACHE_ASSETS)
-  serviceWorker(`${DIST_layer0_CLIENT}/service-worker.js`)
-})
-router.get('/main.js', ({ serveStatic, cache }) => {
-  cache(CACHE_ASSETS)
-  serveStatic(`${DIST_layer0_CLIENT}/browser.js`)
-})
+router.get("/service-worker.js", ({ serviceWorker, cache }) => {
+  cache(CACHE_ASSETS);
+  serviceWorker(`${DIST_layer0_CLIENT}/service-worker.js`);
+});
+router.get("/main.js", ({ serveStatic, cache }) => {
+  cache(CACHE_ASSETS);
+  serveStatic(`${DIST_layer0_CLIENT}/browser.js`);
+});
 
 // assets
 router.get(`/dist/${SPLAT}`, ({ serveStatic, cache }) => {
-  cache(CACHE_ASSETS)
-  serveStatic(`${DIST_APP}/${SPLAT}`)
-})
+  cache(CACHE_ASSETS);
+  serveStatic(`${DIST_APP}/${SPLAT}`);
+});
 router.get(`/assets/${SPLAT}`, ({ serveStatic, cache }) => {
-  cache(CACHE_ASSETS)
-  serveStatic(`${DIST_layer0_ASSETS}/${SPLAT}`)
-})
+  cache(CACHE_ASSETS);
+  serveStatic(`${DIST_layer0_ASSETS}/${SPLAT}`);
+});
 router.get(`/img/${SPLAT}`, ({ proxy, cache }) => {
-  cache(CACHE_ASSETS)
-  proxy('origin')
-})
+  cache(CACHE_ASSETS);
+  proxy("origin");
+});
 
 // api
 router.get(`/api/catalog/${SPLAT}`, ({ proxy, cache }) => {
-  cache(CACHE_PAGES)
-  proxy('origin')
-})
+  cache(CACHE_PAGES);
+  proxy("origin");
+});
 
 router.get(`/api/stock/${SPLAT}`, ({ proxy, cache }) => {
-  cache(CACHE_PAGES)
-  proxy('origin')
-})
+  cache(CACHE_PAGES);
+  proxy("origin");
+});
 
 // pages
-pages.forEach(page => {
+pages.forEach((page) => {
   router.get(page, ({ cache, renderWithApp }) => {
-    cache(CACHE_PAGES)
-    renderWithApp()
-  })
-})
+    cache(CACHE_PAGES);
+    renderWithApp();
+  });
+});
 
 // fallback
 router.fallback(({ renderWithApp }) => {
-  renderWithApp()
-})
+  renderWithApp();
+});
 
-export default router
+export default router;

@@ -37,11 +37,11 @@ module.exports = {
 ```
 - Add `layer0/service-worker.js` file:
 ```js
-import { Prefetcher } from "@layer0/prefetch/sw";
+import { Prefetcher } from "@edgio/prefetch/sw";
 import { clientsClaim, skipWaiting } from "workbox-core";
 import { precacheAndRoute } from 'workbox-precaching';
-import DeepFetchPlugin, { DeepFetchCallbackParam } from '@layer0/prefetch/sw/DeepFetchPlugin'
-import { prefetch } from "@layer0/prefetch/window/prefetch";
+import DeepFetchPlugin, { DeepFetchCallbackParam } from '@edgio/prefetch/sw/DeepFetchPlugin'
+import { prefetch } from "@edgio/prefetch/window/prefetch";
 
 skipWaiting();
 clientsClaim();
@@ -52,8 +52,8 @@ new Prefetcher().route()
 ```
 - Add `layer0/browser.js` file. For example:
 ```js
-import installDevtools from "@layer0/devtools/install";
-import install from "@layer0/prefetch/window/install";
+import installDevtools from "@edgio/devtools/install";
+import install from "@edgio/prefetch/window/install";
 
 document.addEventListener("DOMContentLoaded", () => {
   console.info("[layer0 browser] DOMContentLoaded -> running install()");
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
 ```
 - Add `layer0/routes.js` file. For example:
 ```js
-import { Router } from "@layer0/core/router";
+import { Router } from "@edgio/core/router";
 import { CACHE_ASSETS, CACHE_PAGES } from "./cache";
 
 const DIST_APP = 'dist';
